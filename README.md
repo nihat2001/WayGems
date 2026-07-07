@@ -12,7 +12,7 @@ AI-powered travel guide for Baku, Azerbaijan.
 - **React + TypeScript** — frontend UI
 - **Vite** — build tool
 - **Tailwind CSS** — styling
-- **Nginx** — reverse proxy (proxies `/api/` to backend)
+- **Nginx** — reverse proxy (proxies `/api/` to backend) 
 - **Docker Compose** — orchestration
  
 ## Quick Start
