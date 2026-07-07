@@ -14,7 +14,7 @@ AI-powered travel guide for Baku, Azerbaijan.
 - **Tailwind CSS** — styling
 - **Nginx** — reverse proxy (proxies `/api/` to backend)
 - **Docker Compose** — orchestration
-
+ 
 ## Quick Start
 
 ```bash
