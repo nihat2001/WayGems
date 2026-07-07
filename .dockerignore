@@ -4,3 +4,16 @@
 README.md
 __pycache__
 *.pyc
+frontend/
+node_modules/
+.venv/
+venv/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.oxlint_cache/
+.vscode/
+.idea/
+.DS_Store
+docker-compose.yml
+Dockerfile
