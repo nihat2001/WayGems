@@ -1,7 +1,7 @@
 # WayGems
 
 AI-powered travel guide for Baku, Azerbaijan.
- 
+  
 ## Stack
 
 - **FastAPI** (async) — backend API
