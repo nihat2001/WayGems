@@ -1,6 +1,6 @@
 import os
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, status
 from fastapi.responses import StreamingResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -9,7 +9,8 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
 from database import init_db, get_session
-from rag_service import retrieve_similar_apps
+from rag_service import retrieve_similar_apps, get_embedding
+from validation import AppCreateSchema, AppResponseSchema, FreewareApp
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -18,15 +19,14 @@ async def lifespan(app: FastAPI):
     yield
     print("Shutting down application...")
 
-app = FastAPI(title="FreewareFinder AI API", lifespan=lifespan)
+app = FastAPI(title="FreewareFinder AI", lifespan=lifespan)
 
 llm = ChatGroq(
-    api_key=os.getenv("API_KEY"),
+    api_key=os.getenv("GROQ_API_KEY"),
     model="llama-3.3-70b-versatile",
     temperature=0.2,
     streaming=True
 )
-
 rag_prompt = ChatPromptTemplate.from_messages([
     ("system", (
         "You are an expert Open-Source Software Advocate. Your mission is to help users find free, "
@@ -44,6 +44,10 @@ rag_prompt = ChatPromptTemplate.from_messages([
 rag_chain = rag_prompt | llm | StrOutputParser()
 
 async def response_generator(paid_software: str, db: AsyncSession):
+    """
+    Fetches context using vector similarity search, passes it to the LLM,
+    and streams the response chunks to the client.
+    """
     context = await retrieve_similar_apps(query=paid_software, db=db, limit=3)
     
     async for chunk in rag_chain.astream({"paid_software": paid_software, "context": context}):
@@ -51,7 +55,32 @@ async def response_generator(paid_software: str, db: AsyncSession):
 
 @app.get("/api/search-stream")
 async def search_software_stream(paid_software: str, db: AsyncSession = Depends(get_session)):
+    """
+    Streams AI responses combined with vector database context for software alternatives.
+    """
     return StreamingResponse(
         response_generator(paid_software, db), 
         media_type="text/event-stream"
     )
+
+@app.post("/api/apps", response_model=AppResponseSchema, status_code=status.HTTP_201_CREATED)
+async def create_new_app(payload: AppCreateSchema, db: AsyncSession = Depends(get_session)):
+    """
+    Ingests a new open-source software application into the PostgreSQL database.
+    Automatically generates 768-dimensional embeddings via Gemini and saves them into the pgvector column.
+    """
+    vector_data = get_embedding(payload.description)
+    
+    new_app = FreewareApp(
+        name=payload.name,
+        category=payload.category,
+        replaces=payload.replaces,
+        description=payload.description,
+        github_url=payload.github_url,
+        description_vector=vector_data  
+    )
+    db.add(new_app)
+    await db.commit()
+    await db.refresh(new_app)
+    
+    return new_app
