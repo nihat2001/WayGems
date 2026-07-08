@@ -75,22 +75,28 @@ function formatAnswer(text: string) {
 
 export default function ChatBubble({ response }: { response: ChatResponse }) {
   return (
-    <div className="bg-white border border-gray-200 rounded-2xl rounded-tl-sm p-4 max-w-[90%] shadow-sm">
-      <div className="space-y-0.5">
-        {formatAnswer(response.answer)}
+    <div className="bg-white border border-gray-200 rounded-2xl rounded-tl-sm shadow-sm">
+      <div className="p-4">
+        <div className="space-y-0.5">
+          {formatAnswer(response.answer)}
+        </div>
       </div>
       {response.matches.length > 0 && (
-        <div className="mt-4 border-t border-gray-100 pt-3">
-          <p className="text-xs font-semibold text-brand-600 mb-3 uppercase tracking-wider">
-            Matched places
-          </p>
+        <div className="border-t border-gray-100 px-4 pb-4">
+          <div className="flex items-center gap-2 mb-3 pt-3">
+            <div className="h-px flex-1 bg-gradient-to-r from-brand-200 to-transparent" />
+            <span className="text-[11px] font-semibold text-brand-500 uppercase tracking-widest">
+              Matched Places
+            </span>
+            <div className="h-px flex-1 bg-gradient-to-l from-brand-200 to-transparent" />
+          </div>
           {response.matches.map((m, i) => (
-            <div key={i} className="flex items-start gap-2.5 mb-2.5 last:mb-0">
-              <span className="text-xs font-medium bg-brand-100 text-brand-700 rounded-md px-2 py-0.5 shrink-0">
+            <div key={i} className="flex items-start gap-3 mb-2.5 last:mb-0 p-2 rounded-lg hover:bg-brand-50/50 transition-colors">
+              <span className="text-xs font-bold bg-brand-600 text-white rounded-md px-2 py-0.5 shrink-0 mt-0.5">
                 {(m.confidence * 100).toFixed(0)}%
               </span>
               <div>
-                <p className="text-sm font-medium text-gray-900">{m.place?.name ?? '—'}</p>
+                <p className="text-sm font-semibold text-gray-900">{m.place?.name ?? '—'}</p>
                 {m.reasoning && (
                   <p className="text-xs text-gray-500 mt-0.5 leading-relaxed">{m.reasoning}</p>
                 )}

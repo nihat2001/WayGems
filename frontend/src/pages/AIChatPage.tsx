@@ -67,7 +67,10 @@ export default function AIChatPage() {
                   <p className="text-sm">{m.content}</p>
                 </div>
               ) : (
-                <div className="max-w-[90%]">
+                <div className="flex items-start gap-2.5 max-w-[90%]">
+                  <div className="w-7 h-7 bg-gradient-to-br from-brand-600 to-brand-800 rounded-lg flex items-center justify-center shadow-sm shrink-0 mt-1">
+                    <span className="text-white text-xs font-bold">W</span>
+                  </div>
                   {m.response ? (
                     <ChatBubble response={m.response} />
                   ) : (
@@ -82,11 +85,16 @@ export default function AIChatPage() {
 
           {loading && (
             <div className="flex justify-start animate-fade-in">
-              <div className="bg-white border border-gray-200 rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm">
-                <div className="flex gap-1.5">
-                  <div className="w-2 h-2 bg-brand-400 rounded-full animate-bounce" />
-                  <div className="w-2 h-2 bg-brand-500 rounded-full animate-bounce [animation-delay:0.1s]" />
-                  <div className="w-2 h-2 bg-brand-600 rounded-full animate-bounce [animation-delay:0.2s]" />
+              <div className="flex items-start gap-2.5">
+                <div className="w-7 h-7 bg-gradient-to-br from-brand-600 to-brand-800 rounded-lg flex items-center justify-center shadow-sm shrink-0 mt-1">
+                  <span className="text-white text-xs font-bold">W</span>
+                </div>
+                <div className="bg-white border border-gray-200 rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm">
+                  <div className="flex gap-1.5">
+                    <div className="w-2 h-2 bg-brand-400 rounded-full animate-bounce" />
+                    <div className="w-2 h-2 bg-brand-500 rounded-full animate-bounce [animation-delay:0.1s]" />
+                    <div className="w-2 h-2 bg-brand-600 rounded-full animate-bounce [animation-delay:0.2s]" />
+                  </div>
                 </div>
               </div>
             </div>
