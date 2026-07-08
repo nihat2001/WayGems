@@ -1,91 +1,76 @@
-# WayGems
+# 🗺️ WayGems: AI-Powered Travel Guide for Baku
 
-AI-powered travel guide for Baku, Azerbaijan.
-  
-## Stack
+An intelligent, AI-driven travel companion designed to help travelers explore **Baku, Azerbaijan**. By combining modern semantic search with advanced LLM reasoning, WayGems offers personalized recommendations, contextual city insights, and natural language search tailored to every user's preferences.
 
-- **FastAPI** (async) — backend API
-- **PostgreSQL + pgvector** — database + vector search
-- **Redis** — caching
-- **Groq** — LLM reasoning (tool calling, few-shot, CoT)
-- **Gemini** — text embeddings
-- **React + TypeScript** — frontend UI
-- **Vite** — build tool
-- **Tailwind CSS** — styling
-- **Nginx** — reverse proxy (proxies `/api/` to backend) 
-- **Docker Compose** — orchestration
- 
-## Quick Start
+---
 
+## 🚀 Key Features
+
+| Feature | Description | Technology Used |
+| :--- | :--- | :--- |
+| **🤖 AI Recommendations** | Delivers deep, contextual travel suggestions using Chain-of-Thought (CoT) reasoning instead of generic lists. | Groq LLM |
+| **🔍 Semantic Search** | Understands user intent behind complex queries like *"cozy places to drink traditional tea near Old City"*. | Gemini Text Embeddings & `pgvector` |
+| **⚡ High Performance** | Fully asynchronous API architecture cached with Redis for lightning-fast response times. | FastAPI & Redis |
+| **💻 Modern UI/UX** | Responsive, clean, and intuitive dashboard built for smooth user navigation. | React, TypeScript & Tailwind CSS |
+| **🐳 Containerized** | Production-ready environment setup for easy and consistent deployment. | Docker Compose & Nginx |
+
+---
+
+## 🛠️ Tech Stack & Infrastructure
+
+| Component | Technology | Role in Project |
+| :--- | :--- | :--- |
+| **Backend Framework** | FastAPI | Asynchronous REST API development |
+| **Database** | PostgreSQL + `pgvector` | Relational data storage and vector similarity search |
+| **Caching Layer** | Redis | API response caching and session optimization |
+| **LLM Reasoning** | Groq (Llama-3) | Tool calling, few-shot prompting, and CoT reasoning |
+| **Embeddings Engine** | Gemini API | Generating high-dimensional text embeddings for places |
+| **Frontend Core** | React + TypeScript | Robust, type-safe user interface development |
+| **Build Tool** | Vite | Ultra-fast frontend bundling and hot reloading |
+| **Styling** | Tailwind CSS | Modern utility-first responsive styling |
+| **Reverse Proxy** | Nginx | Routing client traffic efficiently to the backend API |
+| **Orchestration** | Docker Compose | Managing multi-container application lifecycle |
+
+---
+
+## 📂 Project Structure
+
+| Directory | Type | Description |
+| :--- | :--- | :--- |
+| `app/main.py` | File | FastAPI application initialization and entry point |
+| `app/config.py` | File | Environment variables and global configuration management |
+| `app/database.py` | File | Database engines, SQLAlchemy session lifecycle, and Redis client |
+| `app/models/` | Folder | SQLAlchemy database models defining the schema |
+| `app/schemas/` | Folder | Pydantic validation schemas for request/response serialization |
+| `app/routers/` | Folder | API endpoint controllers routing specific domains |
+| `app/services/` | Folder | Core business logic, vector search, and AI pipeline orchestration |
+| `app/utils/` | Folder | Text preprocessing and system prompt engineering templates |
+| `app/seed/` | Folder | Database initialization scripts and mock data seeder for Baku |
+| `frontend/src/api/` | Folder | Axios/Fetch client configuration and central API layer |
+| `frontend/src/components/` | Folder | Reusable UI design elements (Layout, PlaceCard, ChatBubble) |
+| `frontend/src/pages/` | Folder | Application views (AIChatPage, PlacesPage, PlaceDetailPage) |
+| `frontend/src/hooks/` | Folder | Custom React hooks for global state and data fetching |
+| `frontend/nginx.conf` | File | Reverse proxy routing configuration inside the frontend container |
+
+---
+
+## 🔌 Core API Endpoints
+
+| Method | Endpoint | Query/Body Params | Description |
+| :--- | :--- | :--- | :--- |
+| 🟢 **GET** | `/api/categories` | None | Retrieve all available place categories (e.g., Cafe, Museum) |
+| 🟢 **GET** | `/api/places` | `page`, `limit`, `category` | Paginated & filterable list of locations in Baku |
+| 🟢 **GET** | `/api/places/{id}` | `id` (Path) | Detailed view and metadata of a specific place |
+| 🔵 **POST** | `/api/places` | JSON Body | Add a new location directly to the database |
+| 🔵 **POST** | `/api/ai/search` | `{"query": "string"}` | Semantic, natural language search powered by vector embeddings |
+| 🔵 **POST** | `/api/ai/recommend`| `{"preferences": []}` | AI recommendation engine featuring detailed contextual reasoning |
+| 🟢 **GET** | `/api/health` | None | System check for Database, Redis, and API status |
+
+---
+
+## 🚦 Quick Start (Docker Deployment)
+
+### 1. Environment Setup
+Clone the repository and create your environment file from the template:
 ```bash
-# 1. Copy environment file
 cp .env.example .env
-
-# 2. Start all services
-docker compose up -d
-
-# 3. Seed database
-docker compose exec app python -m app.seed.seed_data
-
-# 4. API available at http://localhost:8000
-#    Docs at http://localhost:8000/docs
-#    Frontend at http://localhost:8080
-```
-
-## API Endpoints
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/categories` | List all place categories |
-| GET | `/places` | Filtered & paginated places |
-| GET | `/places/{id}` | Place detail |
-| POST | `/places` | Create a new place |
-| POST | `/ai/search` | Natural language place search |
-| POST | `/ai/recommend` | AI recommendation with reasoning |
-| GET | `/health` | Health check |
-
-## Local Dev (without Docker)
-
-### Backend
-
-```bash
-pip install -r requirements.txt
-python -m app.seed.seed_data
-uvicorn app.main:app --reload
-```
-
-### Frontend
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-The frontend dev server (Vite) proxies `/api/` requests to the backend at `http://localhost:8000`.
-
-## Project Structure
-
-```
-app/
-├── main.py              # FastAPI app
-├── config.py            # Settings from .env
-├── database.py          # Engine, session, Redis
-├── models/              # SQLAlchemy models
-├── schemas/             # Pydantic validation
-├── routers/             # API endpoints
-├── services/            # Business logic + AI pipeline
-├── utils/               # Text cleaning, prompts
-└── seed/                # Database seeder
-frontend/
-├── src/
-│   ├── api/client.ts    # API client
-│   ├── components/      # Reusable UI (Layout, PlaceCard, ChatBubble, ...)
-│   ├── pages/           # Route pages (AIChatPage, PlacesPage, PlaceDetailPage)
-│   ├── hooks/           # Custom hooks
-│   ├── types/           # TypeScript types
-│   ├── App.tsx
-│   └── main.tsx
-├── nginx.conf           # Reverse proxy config
-└── Dockerfile
-```
