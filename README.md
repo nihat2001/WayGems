@@ -56,19 +56,6 @@ An intelligent, AI-driven travel companion designed to help travelers explore **
 
 ---
 
-## 🔌 Core API Endpoints
-
-| Method | Endpoint | Query/Body Params | Description |
-| :--- | :--- | :--- | :--- |
-| 🟢 **GET** | `/api/places` | `page`, `limit`, `category` | Paginated & filterable list of locations in Baku |
-| 🟢 **GET** | `/api/places/{id}` | `id` (Path) | Detailed view and metadata of a specific place |
-| 🔵 **POST** | `/api/places` | JSON Body | Add a new location directly to the database |
-| 🔵 **POST** | `/api/ai/search` | `{"query", "history"}` | Natural language place search with conversation memory |
-| 🔵 **POST** | `/api/ai/recommend` | `{"query", "history"}` | AI recommendation engine with detailed contextual reasoning |
-| 🟢 **GET** | `/api/health` | None | System check for Database, Redis, and API status |
-
----
-
 ## 🚦 Quick Start (Docker Deployment)
 
 ### 1. Environment Setup
