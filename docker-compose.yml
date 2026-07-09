@@ -30,6 +30,7 @@ services:
       REDIS_HOST: redis
       GROQ_API_KEY: ${GROQ_API_KEY}
       GEMINI_API_KEY: ${GEMINI_API_KEY}
+      N8N_WEBHOOK_URL: ${N8N_WEBHOOK_URL}
     depends_on:
       postgres:
         condition: service_healthy

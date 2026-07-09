@@ -12,3 +12,4 @@ langchain-core>=0.3.0
 langchain-groq>=0.2.0
 google-genai>=1.0.0
 numpy>=1.26.0
+requests>=2.32.0

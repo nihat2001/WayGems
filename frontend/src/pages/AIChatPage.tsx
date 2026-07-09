@@ -73,12 +73,25 @@ export default function AIChatPage() {
     }
   }
 
+  const clearChat = () => {
+    setMessages([WELCOME])
+    localStorage.removeItem(STORAGE_KEY)
+  }
+
   return (
     <div className="max-w-2xl mx-auto">
       <div className="mb-6">
         <div className="flex items-center gap-3 mb-2">
           <div className="w-1 h-7 bg-gradient-to-b from-brand-500 to-brand-700 rounded-full" />
           <h1 className="text-3xl font-bold text-gray-900 tracking-tight">AI Search</h1>
+          {messages.length > 1 && (
+            <button
+              onClick={clearChat}
+              className="ml-auto text-xs text-gray-400 hover:text-red-500 transition-colors"
+            >
+              Clear chat
+            </button>
+          )}
         </div>
         <p className="text-gray-500 ml-4">Describe what you're looking for in natural language</p>
       </div>

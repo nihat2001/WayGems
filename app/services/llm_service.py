@@ -5,6 +5,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from app.schemas.place import PlaceOut
 from app.schemas.chat import AIPlaceResult, ChatResponse
 from app.utils.prompts import GENERAL_CHAT, FEW_SHOT_SEARCH, COT_RECOMMEND, GENERAL_KNOWLEDGE
+from app.services.n8n_service import get_n8n_context
 from app.config import settings
 
 
@@ -57,7 +58,11 @@ async def _chat_general(query: str, history: list | None = None) -> ChatResponse
 
 
 async def _knowledge_response(query: str, history: list | None = None) -> ChatResponse:
-    answer = await _call_llm(GENERAL_KNOWLEDGE, "{query}", history=history, query=query)
+    n8n_data = await get_n8n_context(query, "")
+    human = "{query}"
+    if n8n_data:
+        human += "\n\nAdditional context from external source:\n{n8n_context}"
+    answer = await _call_llm(GENERAL_KNOWLEDGE, human, history=history, query=query, n8n_context=n8n_data)
     if not answer:
         answer = (
             "I don't have specific places in my database for that yet, but Baku has "
@@ -97,12 +102,17 @@ async def _ai_response(prompt_template: str, query: str, places: list[PlaceOut],
             f"- {p.name}: {p.description} (rating: {p.rating}, address: {p.address})"
             for p in places[:top_k]
         )
+        n8n_data = await get_n8n_context(query, places_text)
+        human = "User query: {query}\n\nDatabase results:\n{places}"
+        if n8n_data:
+            human += "\n\nAdditional context from external source:\n{n8n_context}"
         answer = await _call_llm(
             prompt_template,
-            "User query: {query}\n\nDatabase results:\n{places}",
+            human,
             history=history,
             query=query,
             places=places_text,
+            n8n_context=n8n_data,
         )
         if not answer:
             return _offline_response(query, places)

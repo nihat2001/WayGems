@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     embedding_model: str = "text-embedding-3-small"
     llm_model: str = "llama-3.3-70b-versatile"
     vector_dimension: int = 768
+    n8n_webhook_url: str = ""
 
     model_config = {"env_file": ".env", "extra": "ignore"}
 

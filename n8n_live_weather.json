@@ -1,0 +1,97 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "abf69954-6e01-490a-a3d0-c184b8dc3fd8",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -64,
+        0
+      ],
+      "id": "28013d82-baea-47b4-a6af-e234f23fa3b4",
+      "name": "Webhook",
+      "webhookId": "abf69954-6e01-490a-a3d0-c184b8dc3fd8"
+    },
+    {
+      "parameters": {
+        "url": "https://api.open-meteo.com/v1/forecast",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "latitude",
+              "value": "40.3776"
+            },
+            {
+              "name": "longitude",
+              "value": "49.8924"
+            },
+            {
+              "name": "current",
+              "value": "temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m"
+            },
+            {
+              "name": "timezone",
+              "value": "auto"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        192,
+        0
+      ],
+      "id": "313f845f-2e23-4b19-b5f7-d882239c8728",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.first().json.current;\nconst codes = {0:\"Clear sky\",1:\"Mainly clear\",2:\"Partly cloudy\",3:\"Overcast\",45:\"Foggy\",48:\"Depositing rime fog\",51:\"Light drizzle\",53:\"Moderate drizzle\",55:\"Dense drizzle\",61:\"Slight rain\",63:\"Moderate rain\",65:\"Heavy rain\",71:\"Slight snow\",73:\"Moderate snow\",75:\"Heavy snow\",80:\"Slight rain showers\",81:\"Moderate rain showers\",82:\"Violent rain showers\",95:\"Thunderstorm\",96:\"Thunderstorm with slight hail\",99:\"Thunderstorm with heavy hail\"};\nconst desc = codes[data.weather_code] || 'Unknown';\nconst text = `Current weather in Baku: ${data.temperature_2m}°C, ${desc}. Feels like ${data.apparent_temperature}°C. Humidity: ${data.relative_humidity_2m}%. Wind: ${data.wind_speed_10m} km/h.`;\nreturn [{weather: text}];"
+      },
+      "id": "c7caa67e-a8ae-4794-bb73-ee76de16c81d",
+      "name": "Format Output1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Format Output1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": "a64087c66526428250d6c8d8abf284d4875cbed4bce86af1c6c0c1b3923e2569"
+  }
+}
