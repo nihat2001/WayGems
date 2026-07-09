@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect } from 'react'
 import { api } from '../api/client'
 import ChatBubble from '../components/ChatBubble'
-import type { ChatResponse } from '../types'
+import type { ChatResponse, ChatMessage } from '../types'
+
+const STORAGE_KEY = 'waygems-chat-messages'
 
 interface Message {
   role: 'user' | 'ai'
@@ -9,16 +11,38 @@ interface Message {
   response?: ChatResponse
 }
 
+const WELCOME: Message = {
+  role: 'ai',
+  content: "Hi! I'm WayGems AI. Tell me what kind of place you're looking for in Baku.",
+}
+
+function loadMessages(): Message[] {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    if (raw) {
+      const parsed = JSON.parse(raw)
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed
+    }
+  } catch {}
+  return []
+}
+
+function toHistory(msgs: Message[]): ChatMessage[] {
+  return msgs.map((m) => ({ role: m.role, content: m.content }))
+}
+
 export default function AIChatPage() {
   const [query, setQuery] = useState('')
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: 'ai',
-      content: "Hi! I'm WayGems AI. Tell me what kind of place you're looking for in Baku.",
-    },
-  ])
+  const [messages, setMessages] = useState<Message[]>(() => {
+    const saved = loadMessages()
+    return saved.length > 0 ? saved : [WELCOME]
+  })
   const [loading, setLoading] = useState(false)
   const endRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(messages))
+  }, [messages])
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -29,11 +53,12 @@ export default function AIChatPage() {
     if (!q || loading) return
 
     setQuery('')
-    setMessages((prev) => [...prev, { role: 'user', content: q }])
+    const updated: Message[] = [...messages, { role: 'user', content: q }]
+    setMessages(updated)
     setLoading(true)
 
     try {
-      const data = await api.ai.search(q)
+      const data = await api.ai.search(q, toHistory(updated))
       setMessages((prev) => [
         ...prev,
         { role: 'ai', content: data.answer, response: data },

@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import init_db, cache
-from app.routers import categories, places, ai_chat
+from app.routers import places, ai_chat
 from app.seed.seed_data import seed as run_seed
 
 
@@ -29,7 +29,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(categories.router)
 app.include_router(places.router)
 app.include_router(ai_chat.router)
 

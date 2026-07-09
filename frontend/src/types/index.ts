@@ -29,6 +29,11 @@ export interface AIPlaceResult {
   reasoning: string
 }
 
+export interface ChatMessage {
+  role: 'user' | 'ai'
+  content: string
+}
+
 export interface ChatResponse {
   answer: string
   matches: AIPlaceResult[]

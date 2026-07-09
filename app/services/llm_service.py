@@ -30,15 +30,17 @@ def _build_llm():
     )
 
 
-async def _call_llm(system: str, human: str, **kwargs) -> str | None:
+async def _call_llm(system: str, human: str, history: list | None = None, **kwargs) -> str | None:
     llm = _build_llm()
     if not llm:
         return None
     try:
-        prompt = ChatPromptTemplate.from_messages([
-            ("system", system),
-            ("human", human),
-        ])
+        messages = [("system", system)]
+        if history:
+            for msg in history:
+                messages.append((msg.role, msg.content))
+        messages.append(("human", human))
+        prompt = ChatPromptTemplate.from_messages(messages)
         chain = prompt | llm
         response = await chain.ainvoke(kwargs if kwargs else {})
         return response.content
@@ -47,15 +49,15 @@ async def _call_llm(system: str, human: str, **kwargs) -> str | None:
         return None
 
 
-async def _chat_general(query: str) -> ChatResponse:
-    answer = await _call_llm(GENERAL_CHAT, "{query}", query=query)
+async def _chat_general(query: str, history: list | None = None) -> ChatResponse:
+    answer = await _call_llm(GENERAL_CHAT, "{query}", history=history, query=query)
     if not answer:
         answer = "Hi! I'm WayGems AI. Ask me about places to visit in Baku!"
     return ChatResponse(answer=answer, matches=[])
 
 
-async def _knowledge_response(query: str) -> ChatResponse:
-    answer = await _call_llm(GENERAL_KNOWLEDGE, "{query}", query=query)
+async def _knowledge_response(query: str, history: list | None = None) -> ChatResponse:
+    answer = await _call_llm(GENERAL_KNOWLEDGE, "{query}", history=history, query=query)
     if not answer:
         answer = (
             "I don't have specific places in my database for that yet, but Baku has "
@@ -82,9 +84,9 @@ def _offline_response(query: str, places: list[PlaceOut]) -> ChatResponse:
     )
 
 
-async def _ai_response(prompt_template: str, query: str, places: list[PlaceOut], top_k: int) -> ChatResponse:
+async def _ai_response(prompt_template: str, query: str, places: list[PlaceOut], top_k: int, history: list | None = None) -> ChatResponse:
     if not places:
-        return await _knowledge_response(query)
+        return await _knowledge_response(query, history=history)
 
     llm = _build_llm()
     if not llm:
@@ -98,6 +100,7 @@ async def _ai_response(prompt_template: str, query: str, places: list[PlaceOut],
         answer = await _call_llm(
             prompt_template,
             "User query: {query}\n\nDatabase results:\n{places}",
+            history=history,
             query=query,
             places=places_text,
         )
@@ -114,13 +117,13 @@ async def _ai_response(prompt_template: str, query: str, places: list[PlaceOut],
         return _offline_response(query, places)
 
 
-async def search_places_ai(query: str, places: list[PlaceOut], top_k: int = 5) -> ChatResponse:
+async def search_places_ai(query: str, places: list[PlaceOut], top_k: int = 5, history: list | None = None) -> ChatResponse:
     if _is_greeting(query):
-        return await _chat_general(query)
-    return await _ai_response(FEW_SHOT_SEARCH, query, places, top_k)
+        return await _chat_general(query, history=history)
+    return await _ai_response(FEW_SHOT_SEARCH, query, places, top_k, history=history)
 
 
-async def recommend_places_ai(query: str, places: list[PlaceOut], top_k: int = 5) -> ChatResponse:
+async def recommend_places_ai(query: str, places: list[PlaceOut], top_k: int = 5, history: list | None = None) -> ChatResponse:
     if _is_greeting(query):
-        return await _chat_general(query)
-    return await _ai_response(COT_RECOMMEND, query, places, top_k)
+        return await _chat_general(query, history=history)
+    return await _ai_response(COT_RECOMMEND, query, places, top_k, history=history)

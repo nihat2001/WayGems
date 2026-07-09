@@ -1,13 +1,7 @@
-import numpy as np
 from app.config import settings
 
 
-def _random_embedding(text: str) -> list[float]:
-    np.random.seed(hash(text) % (2**31))
-    return np.random.uniform(-0.1, 0.1, settings.vector_dimension).tolist()
-
-
-async def generate_embedding(text: str, task_type: str = "RETRIEVAL_DOCUMENT") -> list[float]:
+async def generate_embedding(text: str, task_type: str = "RETRIEVAL_DOCUMENT") -> list[float] | None:
     try:
         import asyncio
         from google import genai
@@ -21,4 +15,4 @@ async def generate_embedding(text: str, task_type: str = "RETRIEVAL_DOCUMENT") -
         )
         return result.embeddings[0].values
     except Exception:
-        return _random_embedding(text)
+        return None

@@ -1,13 +1,9 @@
-import { useState } from 'react'
 import PlaceCard from '../components/PlaceCard'
-import CategorySidebar from '../components/CategorySidebar'
 import LoadingSpinner from '../components/LoadingSpinner'
-import { usePlaces, useCategories } from '../hooks/usePlaces'
+import { usePlaces } from '../hooks/usePlaces'
 
 export default function PlacesPage() {
-  const [categoryId, setCategoryId] = useState<number | undefined>(undefined)
-  const { categories, loading: catLoading } = useCategories()
-  const { places, loading } = usePlaces(categoryId)
+  const { places, loading } = usePlaces()
 
   return (
     <div>
@@ -21,23 +17,12 @@ export default function PlacesPage() {
         </p>
       </div>
 
-      {!catLoading && (
-        <div className="mb-6">
-          <CategorySidebar
-            categories={categories}
-            selected={categoryId}
-            onSelect={setCategoryId}
-          />
-        </div>
-      )}
-
       {loading ? (
         <LoadingSpinner />
       ) : places.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-gray-400">
           <p className="text-6xl mb-4">🗺️</p>
           <p className="text-lg font-medium text-gray-500">Nothing here yet</p>
-          <p className="text-sm mt-1">Try selecting a different category</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

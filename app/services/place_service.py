@@ -2,17 +2,8 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from app.models import Category, Place
+from app.models import Place
 from app.schemas.place import PlaceCreate, PlaceFilter
-
-
-async def list_categories(db: AsyncSession) -> list[Category]:
-    result = await db.execute(select(Category).order_by(Category.id))
-    return result.scalars().all()
-
-
-async def get_category(db: AsyncSession, category_id: int) -> Category | None:
-    return await db.get(Category, category_id)
 
 
 async def list_places(db: AsyncSession, filters: PlaceFilter) -> tuple[list[Place], int]:

@@ -15,6 +15,7 @@ async def vector_search(
         return []
 
     if not embedding:
+        print("No real embedding available — skipping vector search, using LLM knowledge directly.")
         return []
 
     embedding_str = "[" + ",".join(str(v) for v in embedding) + "]"

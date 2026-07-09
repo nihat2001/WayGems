@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from 'react'
 import { api } from '../api/client'
-import type { Place, Category } from '../types'
+import type { Place } from '../types'
 
 
-export function usePlaces(categoryId?: number) {
+export function usePlaces() {
   const [places, setPlaces] = useState<Place[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -11,7 +11,6 @@ export function usePlaces(categoryId?: number) {
     setLoading(true)
     try {
       const data = await api.places.list({
-        category_id: categoryId,
         limit: 50,
       })
       setPlaces(data)
@@ -20,23 +19,9 @@ export function usePlaces(categoryId?: number) {
     } finally {
       setLoading(false)
     }
-  }, [categoryId])
+  }, [])
 
   useEffect(() => { fetch() }, [fetch])
 
   return { places, loading, refetch: fetch }
-}
-
-export function useCategories() {
-  const [categories, setCategories] = useState<Category[]>([])
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    api.categories.list()
-      .then(setCategories)
-      .catch(() => setCategories([]))
-      .finally(() => setLoading(false))
-  }, [])
-
-  return { categories, loading }
 }

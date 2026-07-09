@@ -12,9 +12,6 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 }
 
 export const api = {
-  categories: {
-    list: () => request<import('../types').Category[]>('/categories'),
-  },
   places: {
     list: (params: Record<string, string | number | undefined>) => {
       const qs = new URLSearchParams()
@@ -28,15 +25,15 @@ export const api = {
       request<import('../types').PlaceDetail>(`/places/${id}`),
   },
   ai: {
-    search: (query: string, top_k = 5) =>
+    search: (query: string, history: import('../types').ChatMessage[] = [], top_k = 5) =>
       request<import('../types').ChatResponse>('/ai/search', {
         method: 'POST',
-        body: JSON.stringify({ query, top_k }),
+        body: JSON.stringify({ query, history, top_k }),
       }),
-    recommend: (query: string, top_k = 5) =>
+    recommend: (query: string, history: import('../types').ChatMessage[] = [], top_k = 5) =>
       request<import('../types').ChatResponse>('/ai/recommend', {
         method: 'POST',
-        body: JSON.stringify({ query, top_k }),
+        body: JSON.stringify({ query, history, top_k }),
       }),
   },
 }

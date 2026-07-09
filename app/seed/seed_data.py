@@ -11,10 +11,6 @@ def _random_embedding(text: str) -> list[float]:
     return np.random.uniform(-0.1, 0.1, settings.vector_dimension).tolist()
 
 
-def _img(seed: str) -> list[str]:
-    return [f"https://picsum.photos/seed/{seed}/800/600"]
-
-
 BAKU_CATEGORIES = [
     {"name": "cafe", "icon": "☕", "description": "Cafes and coffee shops"},
     {"name": "restaurant", "icon": "🍽️", "description": "Restaurants and dining"},
@@ -49,10 +45,12 @@ BAKU_PLACES = [
 async def seed():
     await init_db()
     async with AsyncSessionLocal() as db:
-        existing = await db.execute(select(Category).limit(1))
-        if existing.scalar_one_or_none():
-            print("Database already seeded.")
-            return
+        result = await db.execute(select(Category).limit(1))
+        if result.scalar_one_or_none():
+            from sqlalchemy import text as sa_text
+            await db.execute(sa_text("DELETE FROM places"))
+            await db.execute(sa_text("DELETE FROM categories"))
+            await db.commit()
 
         cat_map = {}
         for cat in BAKU_CATEGORIES:

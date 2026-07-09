@@ -17,7 +17,7 @@ async def ai_search(req: ChatRequest, db: AsyncSession = Depends(get_session)):
         place_outs = [
             PlaceOut.model_validate(p) for p in places
         ]
-        return await search_places_ai(req.query, place_outs, top_k=req.top_k)
+        return await search_places_ai(req.query, place_outs, top_k=req.top_k, history=req.history)
     except Exception as e:
         print(f"AI search endpoint error: {e}")
         return ChatResponse(
@@ -33,7 +33,7 @@ async def ai_recommend(req: ChatRequest, db: AsyncSession = Depends(get_session)
         place_outs = [
             PlaceOut.model_validate(p) for p in places
         ]
-        return await recommend_places_ai(req.query, place_outs, top_k=req.top_k)
+        return await recommend_places_ai(req.query, place_outs, top_k=req.top_k, history=req.history)
     except Exception as e:
         print(f"AI recommend endpoint error: {e}")
         return ChatResponse(
