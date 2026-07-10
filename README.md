@@ -56,44 +56,6 @@ An intelligent, AI-driven travel companion designed to help travelers explore **
 
 ---
 
-## 🔌 Core API Endpoints
-
-| Method | Endpoint | Query/Body Params | Description |
-| :--- | :--- | :--- | :--- |
-| 🟢 **GET** | `/api/places` | `page`, `limit`, `category` | Paginated & filterable list of locations in Baku |
-| 🟢 **GET** | `/api/places/{id}` | `id` (Path) | Detailed view and metadata of a specific place |
-| 🔵 **POST** | `/api/places` | JSON Body | Add a new location directly to the database |
-| 🔵 **POST** | `/api/ai/search` | `{"query", "history"}` | Natural language place search with conversation memory |
-| 🔵 **POST** | `/api/ai/recommend` | `{"query", "history"}` | AI recommendation engine with detailed contextual reasoning |
-| 🟢 **GET** | `/api/health` | None | System check for Database, Redis, and API status |
-
----
-
-## 🚦 Quick Start (Docker Deployment)
-
-### 1. Environment Setup
-Clone the repository and create your environment file from the template:
-```bash
-cp .env.example .env
-```
-
-### 2. Start All Services
-```bash
-docker compose up -d
-```
-
-### 3. Seed the Database
-```bash
-docker compose exec app python -m app.seed.seed_data
-```
-
-### 4. Access the Application
-- **API** — [http://localhost:8000](http://localhost:8000)
-- **API Docs** — [http://localhost:8000/docs](http://localhost:8000/docs)
-- **Frontend** — [http://localhost:8080](http://localhost:8080)
-
----
-
 ## 💬 AI Chat Features
 
 The AI chat supports natural language queries about places in Baku, enhanced with:
@@ -110,29 +72,3 @@ Queries about current weather fetch real-time data through an n8n workflow:
 2. **n8n HTTP Request node** fetches weather from Open-Meteo API (`latitude=40.3776&longitude=49.8924`)
 3. **n8n Code node** parses the response (temperature, humidity, wind, weather code)
 4. **Formatted text** is returned and injected into the LLM prompt alongside Baku knowledge
-
-To enable, add to `.env`:
-```
-N8N_WEBHOOK_URL=http://host.docker.internal:5678/webhook/your-webhook-id
-```
-Then activate the workflow in the n8n editor (`http://localhost:5678`).
-
----
-
-## 🛠️ Local Dev (without Docker)
-
-### Backend
-```bash
-pip install -r requirements.txt
-python -m app.seed.seed_data
-uvicorn app.main:app --reload
-```
-
-### Frontend
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-The Vite dev server proxies `/api/` requests to the backend at `http://localhost:8000`.
