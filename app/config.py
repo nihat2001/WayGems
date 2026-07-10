@@ -2,12 +2,9 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    db_user: str = "postgres"
     db_password: str = ""
     db_host: str = "localhost"
-    db_port: int = 5432
     db_name: str = "postgres"
-    db_ssl: str = "require"
     redis_host: str = "localhost"
     groq_api_key: str = ""
     gemini_api_key: str = ""

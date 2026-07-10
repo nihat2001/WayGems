@@ -1,25 +1,16 @@
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import declarative_base, sessionmaker
+import redis.asyncio as redis
 
 from app.config import settings
 
-DATABASE_URL = (
-    f"postgresql+asyncpg://{settings.db_user}:{settings.db_password}"
-    f"@{settings.db_host}:{settings.db_port}/{settings.db_name}"
-    f"?ssl={settings.db_ssl}"
-)
+DATABASE_URL = f"postgresql+asyncpg://postgres:{settings.db_password}@{settings.db_host}:5432/{settings.db_name}"
 
-engine = create_async_engine(DATABASE_URL, echo=False)
+engine = create_async_engine(DATABASE_URL, echo=True)
 AsyncSessionLocal = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
-try:
-    import redis.asyncio as redis  # type: ignore
-
-    cache = redis.Redis(host=settings.redis_host, port=6379, decode_responses=True)
-except Exception:
-    cache = None
-
+cache = redis.Redis(host=settings.redis_host, port=6379, decode_responses=True)
 Base = declarative_base()
 
 

@@ -11,8 +11,7 @@ from app.seed.seed_data import seed as run_seed
 async def lifespan(app: FastAPI):
     await init_db()
     yield
-    if cache is not None:
-        await cache.aclose()
+    await cache.aclose()
 
 
 app = FastAPI(
