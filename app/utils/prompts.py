@@ -1,9 +1,10 @@
 BAKU_KNOWLEDGE = """BAKU CITY KNOWLEDGE (use this context to answer location-based questions):
 
-METRO STATIONS by line:
-- Red Line (SE to NW): Həzi Aslanov → Əhmədli → Xalqlar Dostluğu → Neftçilər → Qara Qarayev → Koroğlu → Ulduz → Bakmil → Nəriman Nərimanov → Gənclik → 28 May → Sahil → İçərişəhər
-- Green Line (branch from 28 May): 28 May → Gənclik → Nəriman Nərimanov → Bakmil → Dərnəgül (also Azadlıq prospekti, Nəsimi stations on a spur)
-- Key stations: Sahil (Sabail district, near Government House, National Library, Baku Boulevard start), 28 May (Nasimi district, main transport hub, railway station), İçərişəhər (Sabail district, entrance to Old City), Gənclik (Nərimanov district, university area, Gənclik Mall)
+METRO STATIONS by line (3 lines, 25 stations):
+- Red Line (Line 1, İçərişəhər → Həzi Aslanov): İçərişəhər → Sahil → 28 May → Gənclik → Nəriman Nərimanov → Bakmil → Ulduz → Koroğlu → Qara Qarayev → Neftçilər → Xalqlar Dostluğu → Əhmədli → Həzi Aslanov (branch from Bakmil to Dərnəgül)
+- Green Line (Line 2, 28 May → Dərnəgül): 28 May → Gənclik → Nəriman Nərimanov → Bakmil → Dərnəgül (with spur: Nəriman Nərimanov → Azadlıq prospekti → Nəsimi → Memar Əcəmi)
+- Purple Line (Line 3, Memar Əcəmi → 8 Noyabr): Memar Əcəmi → Avtovağzal → 8 Noyabr
+- Key stations: Sahil (Sabail district, near Government House, National Library, Baku Boulevard start), 28 May (Nasimi district, main transport hub, railway station entrance, metro hub), İçərişəhər (Sabail district, entrance to Old City), Gənclik (Nərimanov district, university area, Gənclik Mall), Elmlər Akademiyası (Nasimi/Sabail border, near Academy of Sciences, Hüseyn Cavid Park), Nəriman Nərimanov (Narimanov district, residential area, local markets, Baku Zoo nearby), İnşaatçılar (Yasamal district, near Səfillər Park), Koroğlu (Khatai/Nizami border, near Koroğlu market), 20 Yanvar (Yasamal district, near Baku State University old campus), Memar Əcəmi (Narimanov district, near Heydar Aliyev Centre)
 
 ADMINISTRATIVE DISTRICTS (Rayons) OF BAKU:
 - Sabail (Səbail): Central-coastal district. Includes Old City (İçərişəhər), Baku Boulevard, Government House, Port Baku, Azneft Square, National Library. Also includes Bayil neighborhood — a coastal residential area south of the centre, known for Bayil Castle ruins and Baku State University's new campus.
@@ -15,20 +16,73 @@ ADMINISTRATIVE DISTRICTS (Rayons) OF BAKU:
 - Binagadi (Binəqədi): Northern district. Predominantly residential.
 - Garadagh (Qaradağ): Southern industrial district. Oil fields, industrial zones.
 - Khazar (Xəzər): Northern coastal district. Caspian Sea coast, villages.
+- Pirallahi (Pirallahı): Island district east of the city. Caspian Sea coast, beaches, residential.
 - Sabunchu (Sabunçu): Northern district. Residential, suburban feel.
 - Surakhani (Suraxanı): Eastern district. Residential, Ateshgah fire temple.
 - Nərimanov district also includes the area around Heydar Aliyev Centre.
 
 KEY LANDMARKS BY AREA:
-- Sabail / Near Sahil metro: National Library of Azerbaijan, Government House, Baku Boulevard start, Sea Breeze Park
-- Sabail / Bayil area: Bayil Castle ruins, Baku State University new campus, coastal road
-- Sabail / Old City (İçərişəhər): Maiden Tower, Palace of Shirvanshahs, narrow alleys, caravanserais, old mosques
+- Sabail / Near Sahil metro: National Library of Azerbaijan, Government House, Baku Boulevard start, Azerbaijan Carpet Museum (carpet-shaped building on the boulevard), Baku Crystal Hall (event venue on the boulevard)
+- Sabail / Bayil area: Bayil Castle ruins (15th-century fortress ruins on the coast), Baku State University new campus (Bayil campus), Bayil Park (local park with benches and Caspian sea view), coastal road and promenade, several cafes and restaurants along the coast, Bayil residential complex
+- Sabail / Old City (İçərişəhər): Maiden Tower, Palace of Shirvanshahs, narrow alleys, caravanserais (Bukhara, Multani), old mosques (Juma, Muhammad), Kiçik Qala street, artisan workshops
 - Nasimi / Near 28 May metro: Baku Railway Station, Baku State Circus, Opera and Ballet Theatre, Nizami Street east entrance
 - Nərimanov / Near Gənclik metro: Baku State University main campus, Gənclik Mall, Cəfər Cabbarlı Square
-- Nərimanov / Heydar Aliyev Ave: Heydar Aliyev Centre (Zaha Hadid design), Baku Crystal Hall
-- Nizami district: Fountain Square, Nizami Street pedestrian zone, Targovyi (shopping)
-- Baku Boulevard: Seaside promenade stretching from Sahil area (Sabail) eastward, fountains, parks, mini-Venice, ferris wheel
-- Flame Towers: On the hill above Old City (Sabail/Nasimi border), visible city-wide
+- Nərimanov / Heydar Aliyev Ave: Heydar Aliyev Centre (Zaha Hadid design)
+- Sabail / Elmlər Akademiyası metro area: Academy of Sciences of Azerbaijan, Hüseyn Cavid Park, National Museum of History (Taghiyev mansion)
+- Nasimi / 28 May area: Baku Railway Station, Baku State Circus, 28 Mall, Opera and Ballet Theatre, Nizami Street east entrance, many restaurants on 28 May Street and Pushkin Street
+- Yasamal district: Baku Botanical Garden, Səfillər Parkı (Dzorbyanov Park), local fruit and vegetable markets
+- Nizami district: Fountain Square, Nizami Street pedestrian zone, Targovyi shopping street, many restaurants, cafes, and boutiques
+- Baku Boulevard (Dənizkənarı Milli Park): Seaside promenade stretching from Sahil area (Sabail) eastward, fountains, parks, mini-Venice, ferris wheel, cafes, yacht club
+- Flame Towers: On the hill above Old City (Sabail/Nasimi border), visible city-wide, three flame-shaped towers
+
+PARKS & GREEN SPACES:
+- Baku Boulevard (Dənizkənarı Milli Park) — Sabail, near Sahil metro, ~3.5km along the Caspian, fountains, mini-Venice, ferris wheel
+- Dağüstü Park (Upland Park) — Sabail, hilltop panoramic view of Baku Bay, reachable from İçərişəhər by stairs or funicular
+- Philharmonic Fountain Park — Sabail, near Government House and Sahil metro, fountains and formal gardens
+- Hüseyn Cavid Park — Sabail/Nasimi border, near Elmlər Akademiyası metro, large tree-lined green area
+- Bayil Park — Sabail/Bayil, neighbourhood park with benches and Caspian sea views
+- Dədə Qorqud Park — Narimanov, near Gənclik metro, modern park with monuments
+- Səfillər Parkı (Dzorbyanov Park) — Yasamal, near İnşaatçılar metro, older park with tall trees
+- Şəhidlər Xiyabanı (Alley of Martyrs) — Sabail, hilltop memorial park with panoramic city view, Turkish mosque
+- Baku Botanical Garden — Yasamal, large botanical collection with peaceful walking paths
+
+BEACHES (mostly north of the city in Khazar and Sabunchu districts — NOT near central Baku):
+- Mərdəkan Beach — Khazar district, ~30km north, popular family-friendly sandy beach, beach clubs
+- Bilgəh Beach — Khazar district, ~35km north, resort area with beach clubs and hotels
+- Buzovna Beach — Khazar district, ~30km north, sandy beach with cafes
+- Novxanı Beach — Khazar district, ~40km north, quieter and less developed
+- Sea Breeze Beach — Khazar district, ~35km north, part of Sea Breeze resort settlement (NOT near central Baku or Bayil)
+- Şüvəlan Beach — Khazar district, ~25km north, local beach
+- Pirşağı Beach — Sabunchu district, ~40km north
+- Note: Central Baku has no sandy swimming beaches — the coastline near the city centre is the Baku Boulevard promenade
+
+HISTORICAL & CULTURAL SITES:
+- İçərişəhər (Old City / Walled City) — Sabail, UNESCO World Heritage site, Maiden Tower, Palace of the Shirvanshahs, caravanserais (Bukhara and Multani), old mosques (Juma, Synyk Gala), narrow medieval alleys, artisan workshops
+- Atəşgah (Fire Temple) — Surakhani district, ~20km east of centre, Zoroastrian fire temple with Hindu inscriptions, 17th-18th century
+- Yanar Dağ (Burning Mountain) — Khazar district, ~25km north, natural gas fire continuously burning on a hillside
+- Gobustan Rock Art — Qobustan, ~60km south (outside Baku city but popular day trip), UNESCO site with petroglyphs and mud volcanoes
+- National Museum of History — Sabail, near Sahil metro, H.Z. Taghiyev mansion, Azerbaijani history exhibits
+- Azerbaijan Carpet Museum — Sabail, on Baku Boulevard near Sahil metro, carpet-shaped building, thousands of carpets
+- National Art Museum — Sabail/Nasimi border, near Nizami Street, 19th-century mansion, Azerbaijani and European art
+- Baku Museum of Miniature Books — Sabail, in İçərişəhər, unique collection of tiny books
+- Heydar Aliyev Centre — Narimanov, Zaha Hadid architecture, museum and cultural centre
+
+LIBRARIES:
+- National Library of Azerbaijan — Sabail, near Sahil metro, Khagani Street, neoclassical building
+- Baku State University Scientific Library — Narimanov, near Gənclik metro
+- Presidential Library of Azerbaijan — Sabail, near Government House
+- Baku Central Library (Mirza Fatali Akhundov) — Sabail, Khagani Street
+- ANAS Library (Azerbaijan National Academy of Sciences) — Nasimi, near Elmlər Akademiyası metro
+
+VERIFIED VENUES BY AREA (real places — never make up names, use these):
+- Sahil/Sabail area: Pasifico Cafe (cafe on Baku Blvd), Cafe City Sahil (near Park Bulvar), Four Seasons Hotel, National Library, Azerbaijan Carpet Museum
+- Bayil area: Bayil Park (seaside park), Baku State University Bayil campus, coastal promenade
+- 28 May/Nasimi area: Half Way Inn (restaurant, 28 May St), Baku State Circus, 28 Mall, Opera and Ballet Theatre, Gazelli Cafe (Nizami St)
+- Old City/İçərişəhər: Firuze Restaurant (Azerbaijani), Terrace Garden (rooftop, Sultan Inn), Şirvanşah Müsəlləsi, Bukhara Caravanserai, Maiden Tower, Palace of Shirvanshahs, Kiçik Qala street
+- Fountain Square/Nizami St area: Nergiz Restaurant, Azza Cafe, Aroma Cafe, Nizami Street (shopping), Fountain Square, Mugam Club
+- Gənclik/Narimanov area: Baku Roasting Company (specialty coffee, Elmlar area), Gənclik Mall, BSU main campus
+- Yasamal area: Baku Botanical Garden, Dədə Qorqud Park, Səfillər Parkı
+- Beaches (north, NOT central): Mərdəkan Beach, Bilgəh Beach, Buzovna Beach — all in Khazar district, 25-40km north
 
 CULTURAL CONTEXT:
 - The Caspian Sea coastline runs along the east side of the city
